@@ -23,7 +23,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
 public class ProductServiceController {
+    //creating map/array
     private static Map<String, Product> productRepo = new HashMap<>();
+    
+    //creating product object
     static {
         Product honey = new Product();
         honey.setId("1");
@@ -36,7 +39,7 @@ public class ProductServiceController {
         productRepo.put(almond.getId(), almond);
     }
     
-    
+    //get request
     @RequestMapping(value = "/products")
     public ResponseEntity<Object> getProducts(
             @RequestParam(value = "name", required = false, defaultValue = "honey") String name
@@ -44,8 +47,10 @@ public class ProductServiceController {
        return new ResponseEntity<>(productRepo.values(), HttpStatus.OK); 
     }
     
+    //post request
     @RequestMapping(value = "/products", method = RequestMethod.POST)
     public ResponseEntity<Object> createProduct(@RequestBody Product product){
+        //condition if the product already exists
         if (productRepo.containsKey(product.getId())){
             return new ResponseEntity<>("Product already exists", HttpStatus.CONFLICT);
         }
@@ -56,8 +61,10 @@ public class ProductServiceController {
     }
     
     
+    //put request
     @RequestMapping(value = "/products/{id}", method = RequestMethod.PUT)
    public ResponseEntity<Object> updateProduct(@PathVariable("id") String id, @RequestBody Product product) { 
+      //condition if the product isn't exists
       if(!productRepo.containsKey(id)){
           return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
       }
@@ -69,8 +76,10 @@ public class ProductServiceController {
       }
    }
     
+   //delete request
     @RequestMapping(value = "/products/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Object> delete(@PathVariable("id") String id) {
+        //condition if the product isn't exists
         if(!productRepo.containsKey(id)){
           return new ResponseEntity<>("Product not found", HttpStatus.NOT_FOUND);
       }
