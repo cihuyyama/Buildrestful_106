@@ -31,11 +31,17 @@ public class ProductServiceController {
         Product honey = new Product();
         honey.setId("1");
         honey.setName("Honey");
+        honey.setPrice(2000000.00);
+        honey.setDisc(50);
+        honey.setTotal(honey.getPrice(),honey.getDisc());
         productRepo.put(honey.getId(), honey);
         
         Product almond = new Product();
         almond.setId("2");
         almond.setName("Almond");
+        almond.setPrice(4000000.00);
+        almond.setDisc(50);
+        almond.setTotal(almond.getPrice(),almond.getDisc());
         productRepo.put(almond.getId(), almond);
     }
     
@@ -55,6 +61,7 @@ public class ProductServiceController {
             return new ResponseEntity<>("Product already exists", HttpStatus.CONFLICT);
         }
         else{
+            product.setTotal(product.getPrice(), product.getDisc());
             productRepo.put(product.getId(), product);
             return new ResponseEntity<>("Product is created successfully", HttpStatus.CREATED);
         }
@@ -71,6 +78,7 @@ public class ProductServiceController {
       else {
         productRepo.remove(id);
         product.setId(id);
+        product.setTotal(product.getPrice(), product.getDisc());
         productRepo.put(id, product);
         return new ResponseEntity<>("Product is updated successsfully", HttpStatus.OK);
       }
